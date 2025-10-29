@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-MAX_TITLE_LENGTH = 256
+MAX_LENGTH_MODELS = 256
 
 
 class BaseModel(models.Model):
@@ -26,7 +26,7 @@ class BaseModel(models.Model):
 
 class Location(BaseModel):
     name = models.CharField(
-        max_length=MAX_TITLE_LENGTH,
+        max_length=MAX_LENGTH_MODELS,
         verbose_name='Название места')
 
     class Meta:
@@ -39,7 +39,7 @@ class Location(BaseModel):
 
 class Category(BaseModel):
     title = models.CharField(
-        max_length=MAX_TITLE_LENGTH,
+        max_length=MAX_LENGTH_MODELS,
         verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
@@ -58,7 +58,7 @@ class Category(BaseModel):
 
 class Post(BaseModel):
     title = models.CharField(
-        max_length=MAX_TITLE_LENGTH,
+        max_length=MAX_LENGTH_MODELS,
         verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
@@ -67,7 +67,7 @@ class Post(BaseModel):
         ' можно делать отложенные публикации.')
     author = models.ForeignKey(
         User,
-        related_name='post',
+        related_name='posts',
         on_delete=models.CASCADE,
         verbose_name='Автор публикации'
     )
@@ -76,21 +76,21 @@ class Post(BaseModel):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='post',
+        related_name='posts',
         verbose_name='Местоположение'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='post',
+        related_name='posts',
         verbose_name='Категория'
     )
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        ordering = tuple(['-pub_date'])
+        ordering = tuple(['-pub_date'],)
 
     def __str__(self):
         return self.title

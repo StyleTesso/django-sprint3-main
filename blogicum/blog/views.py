@@ -5,7 +5,7 @@ from django.utils import timezone
 from .models import Category, Post
 
 
-VALUE_POSTS = slice(None, 5)
+VALUE_POSTS = 5
 
 
 def get_published_posts():
@@ -20,7 +20,7 @@ def get_published_posts():
 def index(request):
     """Passing the entire list of posts to the context."""
     template = 'blog/index.html'
-    post_list = get_published_posts()[VALUE_POSTS]
+    post_list = get_published_posts()[:VALUE_POSTS]
     context = {'post_list': post_list}
     return render(request, template, context)
 
